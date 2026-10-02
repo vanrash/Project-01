@@ -117,22 +117,57 @@ public class SinglyLinkedList implements LinkedList{
     @Override
     public Object get(int index) {
         // TODO digunakan untuk mengembalikan data pada index ke-i dimulai dari head. Head memiliki index 0
-        return null;
+        if(index < 0 || index >= size){
+            throw new IndexOutOfBoundsException("Index tidak valid");
+        }
+        Node c = head;
+        for(int i = 0; i < index; i++){
+            c = c.pointer;
+        }
+        return c.data;
     }
     @Override
     public int indexOf(Object targetData) {
         // TODO digunakan mencari kemunculan pertama targetData pada linked list dan mengembalikan indeksnya. Indeks dari head adalah 0. Jika tidak ada targetData pada linked list, kembalikan nilai -1 
-        return 0;
+        Node c = head;
+        for(int i = 0; i < size; i++){
+            if(c.data.equals(targetData)){
+                return i;
+            }
+            c = c.pointer;
+        }
+        return -1;
     }
     @Override
     public void printReverse() {
         // TODO digunakan untuk mencetak data pada linked list dengan urutan terbalik, dari tail ke head.
-        
+        for(int i = size - 1; i >= 0; i--){
+            System.out.println(get(i));
+        }
     }
     @Override
     public boolean remove(Object targetData) {
         // TODO digunakan untuk mencari dan menghapus node dengan data=targetData pada linked list serta mengembalikan nilai True jika berhasil, dan False jika targetData tidak ada di linkedList
-        return false;
+       int index = indexOf(targetData);
+       if(index == -1){
+            return false;
+       }
+        if(index == 0){
+            head = head.pointer;
+            if(head == null){
+                tail = null;
+            }
+        } else {
+            Node prev = head;
+            for(int i = 0; i < index - 1; i++){
+                prev = prev.pointer;
+            } if (prev.pointer == tail) {
+            tail = prev;
+            }
+            prev.pointer = prev.pointer.pointer;
+        }
+        size--;
+        return true;
     }
     @Override
     public Object[] toArray() {
